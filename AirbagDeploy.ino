@@ -150,6 +150,18 @@ ISR(INT0_vect)
   sei();
 }
 
+ISR(TIMER0_OVF_vect)
+{
+  cli();
+  counter++;
+  if( counter == 30)
+  {
+    FLAG.FLAG_ISR_TIMER0 = 1;
+    counter = 0;
+  }
+  sei();
+}
+
 int main()
 {
   SET_BIT(DDRD,PD7);
