@@ -135,6 +135,21 @@ uint16_t adc_read(uint8_t adc)
   return ADC;
 }
 
+ISR(INT0_vect)
+{
+  cli();
+  if(FLAG.FLAG_ISR_INT0 == 1)
+  {
+    CLR_BIT(PORTD,PD5);
+    idle_state();
+  }
+  else
+  {
+    FLAG.FLAG_ISR_INT0 = 1;
+  }
+  sei();
+}
+
 int main()
 {
   SET_BIT(DDRD,PD7);
