@@ -83,6 +83,21 @@ void start(void)
   }
 }
 
+ISR(TIMER2_COMPA_vect)
+{
+	cli();
+  	//SET_BIT(PORTD,PD6);
+  	servo_motor_high();
+  	sei();
+}
+
+ISR(TIMER2_COMPB_vect)
+{
+	cli();
+  	CLR_BIT(PORTD,PD6);
+  	sei();
+}
+
 int main()
 {
   SET_BIT(DDRD,PD7);
