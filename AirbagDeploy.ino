@@ -98,6 +98,26 @@ ISR(TIMER2_COMPB_vect)
   	sei();
 }
 
+
+void servo_motor_high(void)
+{
+	for(angle = 0; angle < 180; angle += 1) 	 
+  {                                  
+    servo_test.write(angle);              	 
+    _delay_ms(15);                       
+  } 
+ 
+  _delay_ms(1000);
+  
+  for(angle = 180; angle>=1; angle-=5)    
+  {                                
+    servo_test.write(angle);          
+    _delay_ms(5);                       
+  } 
+
+    _delay_ms(1000);
+}
+
 int main()
 {
   SET_BIT(DDRD,PD7);
