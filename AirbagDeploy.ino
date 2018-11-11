@@ -118,6 +118,12 @@ void servo_motor_high(void)
     _delay_ms(1000);
 }
 
+void buzzer_state(void)
+{
+  Serial.println("Buzzer on");
+  SET_BIT(PORTD,PD7);
+}
+
 int main()
 {
   SET_BIT(DDRD,PD7);
