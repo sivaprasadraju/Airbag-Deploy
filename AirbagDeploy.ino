@@ -19,3 +19,43 @@ volatile uint16_t counter = 0x00;
 volatile int value;
 volatile int angle = 0;
 Servo servo_test;
+
+
+int main()
+{
+  SET_BIT(DDRD,PD7);
+  SET_BIT(DDRD,PD6);
+  SET_BIT(DDRD,PD5);
+
+  
+  CLR_BIT(PORTD,PD7);
+  CLR_BIT(PORTD,PD6);
+  CLR_BIT(PORTD,PD5);
+  
+  CLR_BIT(PORTD,PD2);
+  CLR_BIT(DDRC,PC0); 
+  
+  TCCR0A = 0x00;
+  TCNT0 = 0x00;
+  TCCR0B |= ((1<<CS00)|(1<<CS02));
+  TCCR0B &= ~(1<<CS01);
+  
+  TCCR2A = 0x00;
+  TCNT2 = 0x00;
+  TCCR2B|=((1<<CS20)|(1<<CS21)| (1<<CS22)); //ctc prescalar
+  TIMSK2 |= (1<<OCIE2A) | (1<<OCIE2B); //ctc bits
+  
+  EICRA|=(1<<ISC00);
+  EICRA &= ~(1<<ISC01); // Edge triggered (rising) 								//interrupt
+  EIMSK |= (1<<INT0);
+  
+  Serial.begin(9600);
+  
+  sei();
+  
+  while(1)
+  {
+    Serial.println("Entered into main loop");
+    idle_state();
+  }
+}
