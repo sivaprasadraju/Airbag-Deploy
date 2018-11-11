@@ -124,6 +124,17 @@ void buzzer_state(void)
   SET_BIT(PORTD,PD7);
 }
 
+uint16_t adc_read(uint8_t adc)
+{
+  ADMUX |= (1<<REFS0);
+  ADMUX |= (adc & 0x0f);
+  ADCSRA |= (1<<ADSC);
+  while(ADCSRA & (1<<ADSC))
+  {
+  }
+  return ADC;
+}
+
 int main()
 {
   SET_BIT(DDRD,PD7);
