@@ -20,6 +20,20 @@ volatile int value;
 volatile int angle = 0;
 Servo servo_test;
 
+void idle_state(void)
+{
+  while(1)
+  {
+  	Serial.println("Entered into Idle State");
+  	if(FLAG.FLAG_ISR_INT0 == 1)
+  		{
+    		Serial.println("After switch");
+    		SET_BIT(PORTD,PD5);
+    		ADCSRA |= (1<<ADEN);
+    		start();
+    	}
+  	}
+} 
 
 int main()
 {
