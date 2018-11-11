@@ -35,6 +35,54 @@ void idle_state(void)
   	}
 } 
 
+void start(void)
+{
+  while(1){
+    Serial.println("Entered into start");
+    TIMSK0 |= (1<<TOIE0);
+    if(FLAG.FLAG_ISR_TIMER0 == 1)
+      {	
+        Serial.println("After Timer");
+        value = adc_read(0);
+      	Serial.println(value);
+        while(value <= 255)
+          {
+          	Serial.println("Entered into low state");
+          	FLAG.FLAG_ISR_TIMER0 = 0;
+            start();
+          	value = adc_read(0);
+          	Serial.println(value);
+          }
+        while(value > 255 && value <= 350)
+          {
+          	Serial.println("Entered into Buzzer State");
+          	FLAG.FLAG_ISR_TIMER0 = 0;
+            buzzer_state();
+          	value = adc_read(0);
+          	Serial.println(value);
+          }
+        while(value > 350 && value <= 790)
+          {
+          	Serial.println("Entered into medium state");
+          	FLAG.FLAG_ISR_TIMER0 = 0;
+            OCR2A = 128;
+            OCR2B = 255;
+          	value = adc_read(0);
+          	Serial.println(value);
+          }
+        while(value > 790)
+          {
+          	Serial.println("Entered into airbag deployed");
+          	FLAG.FLAG_ISR_TIMER0 = 0;
+            OCR2A = 255;
+            OCR2B = 255;
+          	value = adc_read(0);
+          	Serial.println(value);
+          }
+      }
+  }
+}
+
 int main()
 {
   SET_BIT(DDRD,PD7);
