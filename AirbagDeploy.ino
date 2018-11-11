@@ -14,3 +14,8 @@ struct
   volatile unsigned int FLAG_ISR_TIMER0:1;
   volatile unsigned int FLAG_ISR_INT0:1;
 }FLAG;
+
+volatile uint16_t counter = 0x00;
+volatile int value;
+volatile int angle = 0;
+Servo servo_test;
